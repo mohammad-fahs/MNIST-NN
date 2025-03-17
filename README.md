@@ -9,8 +9,6 @@ This report outlines the implementation of an advanced neural network on the MNI
 The first step involves loading the MNIST dataset, which contains 60,000 training images and 10,000 test images, each of size 28x28 pixels, representing the digits 0-9.
 
 ```python
-python
-CopyEdit
 mnist = keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -23,8 +21,6 @@ mnist = keras.datasets.mnist
 Before proceeding with training the model, it's important to explore and visualize the data to understand its structure.
 
 ```python
-python
-CopyEdit
 print("Training data shape:", x_train.shape)
 print("Testing data shape:", x_test.shape)
 
@@ -46,8 +42,6 @@ plt.show()
 Data preprocessing is an essential step to prepare the dataset for training. This involves normalizing the pixel values and reshaping the images into a 1D array of 784 features (28x28 pixels).
 
 ```python
-python
-CopyEdit
 x_train = x_train / 255.0
 x_test = x_test / 255.0
 x_train = x_train.reshape(-1, 28*28)
@@ -66,8 +60,6 @@ y_test = keras.utils.to_categorical(y_test, 10)
 The core of the model involves stacking multiple layers, including `Dense`, `BatchNormalization`, and `Dropout` layers. Here's the model architecture:
 
 ```python
-python
-CopyEdit
 model = keras.Sequential([
     keras.layers.Dense(256, activation='relu', input_shape=(784,)),
     keras.layers.BatchNormalization(),
@@ -103,8 +95,6 @@ model = keras.Sequential([
 After building the model, it is compiled and trained using the following code:
 
 ```python
-python
-CopyEdit
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=20, batch_size=64)
 
@@ -119,8 +109,6 @@ history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=2
 After training, the model's performance is evaluated on the test dataset to determine how well it generalizes to unseen data.
 
 ```python
-python
-CopyEdit
 test_loss, test_acc = model.evaluate(x_test, y_test)
 print("Test accuracy:", test_acc)
 
@@ -133,8 +121,6 @@ print("Test accuracy:", test_acc)
 It is important to track the model's performance during training. Plotting the training and validation accuracy and loss curves helps in understanding whether the model is overfitting, underfitting, or converging correctly.
 
 ```python
-python
-CopyEdit
 def plot_history(history, title):
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
@@ -158,8 +144,6 @@ plot_history(history, "Advanced Model")
 Once the model is trained, it can be used to make predictions on the test dataset.
 
 ```python
-python
-CopyEdit
 predictions = model.predict(x_test)
 y_pred = np.argmax(predictions, axis=1)
 y_true = np.argmax(y_test, axis=1)
@@ -173,8 +157,6 @@ y_true = np.argmax(y_test, axis=1)
 To assess the model's performance more closely, we identify and visualize the misclassified images.
 
 ```python
-python
-CopyEdit
 misclassified = np.where(y_pred != y_true)[0]
 plt.figure(figsize=(10, 5))
 for i, idx in enumerate(misclassified[:10]):
@@ -191,8 +173,6 @@ plt.show()
 After the model has been trained, it can be saved for future use.
 
 ```python
-python
-CopyEdit
 model.save("mnist_advanced_model.h5")
 loaded_model = keras.models.load_model("mnist_advanced_model.h5")
 test_loss, test_acc = loaded_model.evaluate(x_test, y_test)
